@@ -1,0 +1,16 @@
+-> AWS CLI
+	-> to programatically configure aws resources through command prompt
+
+-> AWS CLI Commands
+	-> Create key value pair
+		-> aws ec2 create-key-pair --key-name MyKeyFirstCliPair --output text > MyFirstCliKeyPair.pem
+	-> Describe key value pair
+		-> aws ec2 describe-key-pairs
+	-> Delete key value pair
+		-> aws ec2 delete-key-pair --key-name MyKeyFirstCliPair
+	-> Create ec2 instance
+		-> aws ec2 run-instances --image-id ami-0667e6e9c2c1b6e50 --count 1 --instance-type t2.micro --key-name MyTestCLI --security-group-ids sg-46a59f3d
+	-> Terminate ec2 instance
+		-> aws ec2 terminate-instances --instance-ids
+	
+	
