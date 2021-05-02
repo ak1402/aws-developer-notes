@@ -13,4 +13,28 @@
 	-> Terminate ec2 instance
 		-> aws ec2 terminate-instances --instance-ids
 	
+	-> Creating tags on EC2 instances
+		-> aws ec2 create-tags --resource <image-id> --tags Key=<key>, Value=<value>
 	
+	-> S3
+		-> Create S3 bucket
+			-> aws s3 mb s3://<bucket-name>
+		-> Sync directory : Syncs the s3 bucket with local directory
+			-> aws s3 sync <folder> s3://<bucket-name>
+			-> aws s3 sync <folder> s3://<bucket-name> --delete : Adding delete will sync the deleted files with s3 bucket
+		-> Move file from local to s3 or vice versa
+			-> aws s3 mv <path> s3://<bucket-name>
+			-> aws s3 mv s3://<bucket-name> <folder>
+		-> Copy files
+			-> aws s3 cp <path> s3://<bucket-name> : Copy file from local to s3
+			-> aws s3 cp s3://<bucket-name> <path> : Copy file from s3 to local
+			-> aws s3 cp s3://<bucket-name-1> s3://<bucket-name-2> : Copy file from s3 to s3
+		-> Delete file
+			-> aws s3 rm s3://<bucket-name> --recursive  : delete all objects
+			-> aws s3 rm s3://<bucket-name>/<filename> : delete file
+			-> aws s3 rm s3://<bucket-name> --recursive --exclude "*<.extension>" : delete all objects except extension
+		-> Delete bucket
+			-> aws s3 rb s3://<bucket-name>
+			
+				
+		
