@@ -2,21 +2,24 @@
 	-> to programatically configure aws resources through command prompt
 
 -> AWS CLI Commands
-	-> Create key value pair
-		-> aws ec2 create-key-pair --key-name MyKeyFirstCliPair --output text > MyFirstCliKeyPair.pem
-	-> Describe key value pair
-		-> aws ec2 describe-key-pairs
-	-> Delete key value pair
-		-> aws ec2 delete-key-pair --key-name MyKeyFirstCliPair
-	-> Create ec2 instance
-		-> aws ec2 run-instances --image-id ami-0667e6e9c2c1b6e50 --count 1 --instance-type t2.micro --key-name MyTestCLI --security-group-ids sg-46a59f3d
-	-> Terminate ec2 instance
-		-> aws ec2 terminate-instances --instance-ids
+	-> EC2
 	
-	-> Creating tags on EC2 instances
-		-> aws ec2 create-tags --resource <image-id> --tags Key=<key>, Value=<value>
+		-> Create key value pair
+			-> aws ec2 create-key-pair --key-name MyKeyFirstCliPair --output text > MyFirstCliKeyPair.pem
+		-> Describe key value pair
+			-> aws ec2 describe-key-pairs
+		-> Delete key value pair
+			-> aws ec2 delete-key-pair --key-name MyKeyFirstCliPair
+		-> Create ec2 instance
+			-> aws ec2 run-instances --image-id ami-0667e6e9c2c1b6e50 --count 1 --instance-type t2.micro --key-name MyTestCLI --security-group-ids sg-46a59f3d
+		-> Terminate ec2 instance
+			-> aws ec2 terminate-instances --instance-ids
+
+		-> Creating tags on EC2 instances
+			-> aws ec2 create-tags --resource <image-id> --tags Key=<key>, Value=<value>
 	
 	-> S3
+	
 		-> Create S3 bucket
 			-> aws s3 mb s3://<bucket-name>
 		-> Sync directory : Syncs the s3 bucket with local directory
@@ -35,6 +38,52 @@
 			-> aws s3 rm s3://<bucket-name> --recursive --exclude "*<.extension>" : delete all objects except extension
 		-> Delete bucket
 			-> aws s3 rb s3://<bucket-name>
-			
-				
+			-> aws s3 rb s3://<bucket-name> --force : deletes bucket regardles of empty
+	
+	-> AWS SQS
 		
+		-> There are two types of SQS
+			-> Standard queue
+			-> FIFO queue
+		-> Standard queue
+			-> allows duplicate message id and tries its best to order the message availaable in the queu. however there is a chances
+				of duplicate message id processing if the message stored contenguiously in server fails
+			-> allow at least 1 processing.
+			
+		-> FIFO queue
+			-> doesnt allow multiple message id in deduplication interval to be available in queue
+			-> allow one processing only
+			-> mantains the order of the message.
+			-> if multiple group id is used, then the order will be on the group id level.
+			-> allows 3000 transaction and 300 api calls at onces
+			-> suitable for system were order and uniquness of message processing is important
+		
+		-> Resources for SQS
+			-> ApproximateNumberOfMessages
+				-> get the appropiate number of messages in the queue
+			-> ApproximateNumberOfMessages
+				-> get the appropiate number of delayed message
+			-> ApproximateNumberOfMessagesNotVisible
+				-> get the appropiate number of not visible messages
+				
+		-> Short Polling
+			-> queries subset of servers not entirely.
+			-> returns subset of messages.
+			-> response is sent right away even if there is no messages
+		
+		-> Long Polling
+			-> Long polling is when RecieveMessage api is greater than 0.
+		
+		-> Dead letter queue
+			-> When messages arent delvered ater multiple tries are placed under dead letter queue.
+			-> used for debugging purpose.
+			
+		-> Visiblity queue
+			-> When message are processed they have a fixed visiblity period under which no other consumer can access the message.
+		
+		-> Delayed queues
+			-> Send a message after certain delay period to the queue.
+			
+			
+			
+			
