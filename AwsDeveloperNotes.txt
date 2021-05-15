@@ -84,6 +84,123 @@
 		-> Delayed queues
 			-> Send a message after certain delay period to the queue.
 			
+	-> AWS SNS
+	
+		-> publisher and subscriber based approach.
+
+		-> difference btw SNS and SQS is
+			-> SNS publish message to a topic which is subscribe by various service (reciever)
+
+		-> max 256kb is allowed, otherwise you can use extended client library that can send 2 gb.
+			-> it stores the payload in s3 and shares the reference, the consumer recieve the reference and get the s3 object.
+
+		-> SNS FIFO
+			-> strictly manages the order of the message.
+
+		-> Deduplication id
+			-> If message is send with a deduplication id , another message cant be accepted but not deleivered during deduplication period.
+
+		-> Message grouping
+			-> it is to group the message in a particular groupid.
+			-> the order is maintained in the groups.
+			
+		-> SQS, lambda , https client system are the one that are consumer of SNS.
+		
+		-> Message filtering is used to filter the messages of which message to be delivered to which consumer.
+		
+	-> AWS EC2
+		
+		-> available in compute service in aws -> elastic cloud computing.
+		
+		-> ec2 instance is generated using AMI Amazon Machine Identity.
+		
+		-> an ami is the template where you can configure software, OS etc of an ec2 instance.
+		
+		-> ec2 has root storage which is called EBS elastic block storage.
+		
+		-> terminating ec2 terminates root volume.
+		
+		-> security group is per region.
+			-> inbound and outbound policy is determined in security group.
+		
+		-> AMI created can be imported to different region to create ec2 instance
+		
+		-> you can monitor ec2 using monitoring tools
+		
+		-> Cloud watch is a monitioring tool where you can send the metric of your ec2 instances.
+			-> 5 min is default time, 1 min is paid.
+			-> define cloud watch alarm to take actiion on the events that occured in ec2.
+		
+		-> AWS has been deployed in multiple region and each region is having multiple AZ
+			-> AZ are avaialblity zone and there are minimum 3 AZ per region.
+			
+		-> To add security to your ec2 instance, configure your security group to limit access to you instance
+		
+		-> you can use private subnet for your instance to stop it getting access from internet.
+		-> you can deploy NAT gateway in you instance to access public netwrok.
+		
+		-> A virtual private cloud (VPC) is a virtual network in your own logically isolated area in the AWS Cloud.
+			-> Use seperate VPC to isolate your resouces based on workload or oganisation entity.
+			
+		-> Call EC2 from a VPC with sending traffic to internet, aws private link.
+		
+		-> hypervisor isolates CPU and memory.
+		
+	S3
+		-> Object/File storage in aws cloud.
+		
+		-> Simple Storage service, can store as much data, required for big data and machine nearling.
+		
+		-> Create delete synce move upload etc are the some function that you can perform on amazon s3 bucket.
+		
+		-> To access the object in s3 bucket, you can use the object url(https) from your browser.
+			-> you can define bucket policy to manage the access on s3 buckets.
+			-> bucket policy can be generate through policy generator
+			
+		-> you can use Private link to access the s3 bucket without transfering the traffic on internet.
+			-> Interface endpoint is an extension to gateway endpoint which uses private ip to connect to aws resource within you VPC or with another VPC.
+			-> with the help of private link, you can connect to your s3 bucket over direct connect or VPN.
+		
+		-> Encryption
+			-> There are two types of encyrtion in S3
+				-> Server Side
+					-> Server side encryption as name suggested is done on the server side. There are two default server side encryption option.
+					-> SSE - S3
+						-> uses master key to encrypt and decrypt the object stored in s3
+						-> CLI command to put object with SSE S3
+							-> aws s3 cp <path> <bucket-name> --sse
+					
+					-> SSE - S3 KMS encryption
+						-> while uploading objects, S3 makes a call to KMS service to get the key (1 in plain format and another in cipher format). S3 uses plain format to encrpty the data and stores the object with cipher format key as metadata.
+							in decrypting, s3 makes a call again to KMS service passing the encrpted data key and askes to generate a plain text data key. The S3 then decypts the object using plain text data key and sends the request abck to the users.
+						
+						-> CLI command to put object with SSE S3 KMS
+							
+							-> aws s3 cp <path> <bucket-name> --sse aws:kms --sse-kms-key-id <key id stored in KMS>
+				
+				-> Client Side
+					-> Using Customer managed Key stored in AWS KMS
+					
+						-> Client sends the CMKID get the symmetric data key from the KMS.						
+						-> This data key is used to encrypt the object.						
+						-> AWS KMS returns two keys, 1st one is plaintext and second is ciphor blob
+						-> The client encrypts the object and attach the cipher key along with it as a meta data.
+						-> when downloaded the object, it reciepher the cipher blob key. This is send by the client again to KMS and a plain text output is generated for the same
+							to decrypt the object.
+					
+					-> using master key stored in your application.
+						
+						-> provide client master key to amazon encryption client. the client then uses the master key only to encrypt the data key provided by encrption client.
+						-> Once the data key is recieved, it is used to encrpty the object and the master key is used to encrpty the datakey as well.
+						-> the object is stored to s3 bucket along with the encrypted key and its material description.
+						-> when downloading, the client uses the material description to find out which master key is required to depcrypt the key.
+						-> once the key is decrypted, it is used to decrpt the object as well.
+						
+		
+		
+		
+		
+			
 			
 			
 			
