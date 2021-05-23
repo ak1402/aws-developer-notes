@@ -2,6 +2,7 @@
 	-> to programatically configure aws resources through command prompt
 
 -> AWS CLI Commands
+	
 	-> EC2
 	
 		-> Create key value pair
@@ -146,7 +147,8 @@
 		
 		-> hypervisor isolates CPU and memory.
 		
-	S3
+	-> S3
+	
 		-> Object/File storage in aws cloud.
 		
 		-> Simple Storage service, can store as much data, required for big data and machine nearling.
@@ -179,6 +181,7 @@
 							-> aws s3 cp <path> <bucket-name> --sse aws:kms --sse-kms-key-id <key id stored in KMS>
 				
 				-> Client Side
+				
 					-> Using Customer managed Key stored in AWS KMS
 					
 						-> Client sends the CMKID get the symmetric data key from the KMS.						
@@ -188,7 +191,7 @@
 						-> when downloaded the object, it reciepher the cipher blob key. This is send by the client again to KMS and a plain text output is generated for the same
 							to decrypt the object.
 					
-					-> using master key stored in your application.
+					-> Using master key stored in your application.
 						
 						-> provide client master key to amazon encryption client. the client then uses the master key only to encrypt the data key provided by encrption client.
 						-> Once the data key is recieved, it is used to encrpty the object and the master key is used to encrpty the datakey as well.
@@ -196,11 +199,47 @@
 						-> when downloading, the client uses the material description to find out which master key is required to depcrypt the key.
 						-> once the key is decrypted, it is used to decrpt the object as well.
 						
+	-> API Gateway
+	
+		-> Api gateway is the frount gate for the api. It is basically the entry point of api. All the routes security principle log can be attain from here.
 		
+		-> Api gateway supports 
+			-> Http endpoints
+			-> Rest endpoints
+			-> Websockets.
 		
+		-> Api Gateway intergrates client with the backend aws services like lambda, http, SNS, SQS, EC2 etc.		
+		-> Api Gateway also supports private integration that client can access private resource inside VPC without exposing it to public network.		
+		-> Enable cache encryption extend the security of api gateway.
 		
+	-> Elastic Cache
+
+		-> it is an in memory data storage.
+		-> used to cached the data from data staore in order to achieve low latency and high resoponse.
+		-> use case would be session storage in which when user logs into application for the first time, it stores the data in elastic cache so that next time 
+			he logs in again the value is returned from the cache.
+		-> There are two primary in memory database
+			-> Redis 
+				-> with redis you can keep your data on disk with a point in snapshot which can be used for archival purpose.
+				-> redis lets you create multiple replica of primary store, in order to sclae up for read operation.
+				-> supports transaction.
+				-> redis supports pub sub pattern
+				-> no multithreading is supported
+				
+			-> Memcache
+				-> No snapshot
+				-> No replica
+				-> Doesnt support transaction.
+				-> No pub sub pattern
+				-> memchached is multithreaded.
 		
+		-> Security
+			-> In transit security (TLS)
+				-> enable in transit security on the replica.
 			
+			-> At rest encryption in elstic cache for redis.
+				-> elastic cache for redis at rest encryption using AWS KMS
+			-> Redis Auth to get access to redis store.
+			-> memchache uses sasl based authentication.
 			
-			
-			
+		
