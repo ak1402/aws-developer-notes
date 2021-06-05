@@ -242,4 +242,24 @@
 			-> Redis Auth to get access to redis store.
 			-> memchache uses sasl based authentication.
 			
+	-> Dynamo DB
+	
+		-> NoSQL database store data in a format other than relational table. and it includes document, key value pair	wide column and graph.
+		-> NoSql doesnt have ACID property.
+		-> Automatic data replication over AZ's.
+		-> Intergration to EMR, data pipeline and kinesis.
+		-> Scales more to 10 trillions request a day.
+		-> For caching it uses DAX
+		-> Data can be backed to s3.
+		-> Read after write consistency strong consistency and eventual consistency.
+			-> Strong consistency.
+				-> Latest data is read
+			-> Eventual
+				-> Latest data can be read after short time.
+		-> Cloud watch monitoring
+		-> Encryption at rest KMS.
 		
+		-> DynamoDB partition data on the basis of id and distribute it on SSD.
+		-> To replicate the db on different region (1)(Near real time cross replication), it uses dynamo db streams. and replicate the accross all the region it uses Global Table (Async Repl)
+		-> Encryption at rest is KMS
+		-> Encryption on mobile is SSL.
